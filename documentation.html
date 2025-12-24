@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Документация PulseOS - Руководство пользователя</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Roboto:wght@300;400;500&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #77216F;
+            --primary-light: #9d4295;
+            --secondary: #E95420;
+            --dark: #333;
+            --light: #f5f5f5;
+            --gray: #777;
+            --sidebar-width: 280px;
+            --code-bg: #f8f8f8;
+            --border-color: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #fff;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        code, pre {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--light);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .sidebar-header h1 i {
+            margin-right: 10px;
+        }
+        
+        .back-to-home {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .back-to-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .sidebar-nav {
+            padding: 1.5rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+        
+        .nav-section h3 {
+            color: var(--primary);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .nav-links {
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(119, 33, 111, 0.1);
+            color: var(--primary);
+        }
+        
+        /* Main content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            max-width: 900px;
+        }
+        
+        .doc-header {
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .doc-header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+        
+        .doc-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+        }
+        
+        .doc-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .doc-section:last-of-type {
+            border-bottom: none;
+        }
+        
+        .doc-section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            margin-top: 2rem;
+        }
+        
+        .doc-section h3 {
+            color: var(--dark);
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+        }
+        
+        .doc-section p {
+            margin-bottom: 1rem;
+        }
+        
+        .doc-section ul, .doc-section ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .doc-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Code blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        
+        .code-block pre {
+            margin: 0;
+        }
+        
+        .code-block code {
+            color: #d63384;
+        }
+        
+        .command {
+            background: var(--dark);
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Source Code Pro', monospace;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .command:before {
+            content: "$";
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        
+        /* Info, Warning, Note boxes */
+        .info-box, .warning-box, .note-box {
+            padding: 1.2rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        
+        .info-box {
+            background: #e7f2fa;
+            border-color: #2196F3;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+        
+        .note-box {
+            background: #f0f4f8;
+            border-color: var(--primary);
+        }
+        
+        .box-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .box-title i {
+            margin-right: 10px;
+        }
+        
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        table tr:nth-child(even) {
+            background: var(--light);
+        }
+        
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            z-index: 101;
+            cursor: pointer;
+        }
+        
+        /* Mobile back to top button */
+        .back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                padding-top: 4rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .back-to-top {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .doc-header h1 {
+                font-size: 2rem;
+            }
+            
+            .doc-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .mobile-menu-btn, .back-to-top {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile menu button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1><i class="fas fa-heartbeat"></i> PulseOS Docs</h1>
+            <p>Документация версия 1.0</p>
+            <a href="index.html" class="back-to-home">
+                <i class="fas fa-arrow-left"></i> Вернуться на главную
+            </a>
+        </div>
+        
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <h3>Начало работы</h3>
+                <ul class="nav-links">
+                    <li><a href="#introduction" class="active">Введение</a></li>
+                    <li><a href="#installation">Установка PulseOS</a></li>
+                    <li><a href="#first-steps">Первые шаги</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Система и настройки</h3>
+                <ul class="nav-links">
+                    <li><a href="#system-settings">Системные настройки</a></li>
+                    <li><a href="#network">Сеть и интернет</a></li>
+                    <li><a href="#updates">Обновление системы</a></li>
+                    <li><a href="#users">Пользователи и группы</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Управление пакетами</h3>
+                <ul class="nav-links">
+                    <li><a href="#apt">APT и пакеты</a></li>
+                    <li><a href="#snap">Snap пакеты</a></li>
+                    <li><a href="#flatpak">Flatpak</a></li>
+                    <li><a href="#repositories">Репозитории</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Терминал и команды</h3>
+                <ul class="nav-links">
+                    <li><a href="#terminal-basics">Основы терминала</a></li>
+                    <li><a href="#useful-commands">Полезные команды</a></li>
+                    <li><a href="#bash-scripting">Bash скрипты</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Решение проблем</h3>
+                <ul class="nav-links">
+                    <li><a href="#troubleshooting">Общие проблемы</a></li>
+                    <li><a href="#boot-issues">Проблемы с загрузкой</a></li>
+                    <li><a href="#hardware">Проблемы с оборудованием</a></li>
+                    <li><a href="#support">Техническая поддержка</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Main content -->
+    <main class="main-content">
+        <div class="doc-header">
+            <h1>Документация PulseOS</h1>
+            <p>Полное руководство по установке, настройке и использованию дистрибутива PulseOS на базе Ubuntu 24.04.03 LTS</p>
+            <div class="note-box">
+                <div class="box-title"><i class="fas fa-info-circle"></i> Примечание</div>
+                <p>Эта документация постоянно обновляется. Последнее обновление: 15 ноября 2023 г. Для PulseOS версии 1.0 "Noble Narwhal".</p>
+            </div>
+        </div>
+        
+        <!-- Введение -->
+        <section class="doc-section" id="introduction">
+            <h2>Введение в PulseOS</h2>
+            <p>PulseOS — это дистрибутив Linux, основанный на Ubuntu 24.04.03 LTS (Noble Numbat). Он сочетает в себе стабильность Ubuntu с современным интерфейсом и оптимизациями для повышения производительности.</p>
+            
+            <h3>Ключевые особенности</h3>
+            <ul>
+                <li><strong>Основан на Ubuntu 24.04.03 LTS</strong> — долгосрочная поддержка до апреля 2027 года</li>
+                <li><strong>Современная среда рабочего стола</strong> — GNOME 46 с пользовательскими темами и расширениями</li>
+                <li><strong>Оптимизация производительности</strong> — улучшенное управление памятью и временем загрузки</li>
+                <li><strong>Предустановленные приложения</strong> — полный набор программ для работы и мультимедиа</li>
+                <li><strong>Поддержка аппаратного обеспечения</strong> — современные драйверы и поддержка новых устройств</li>
+            </ul>
+            
+            <h3>Системные требования</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Компонент</th>
+                            <th>Минимальные</th>
+                            <th>Рекомендуемые</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Процессор</td>
+                            <td>2 ядра, 1.5 ГГц</td>
+                            <td>4+ ядер, 2.0+ ГГц</td>
+                        </tr>
+                        <tr>
+                            <td>Оперативная память</td>
+                            <td>2 ГБ</td>
+                            <td>8 ГБ или больше</td>
+                        </tr>
+                        <tr>
+                            <td>Хранилище</td>
+                            <td>25 ГБ</td>
+                            <td>50 ГБ (SSD рекомендуется)</td>
+                        </tr>
+                        <tr>
+                            <td>Видеокарта</td>
+                            <td>Поддержка OpenGL 3.3</td>
+                            <td>Поддержка Vulkan 1.1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Установка -->
+        <section class="doc-section" id="installation">
+            <h2>Установка PulseOS</h2>
+            <p>PulseOS может быть установлен как основная система или вместе с другой ОС (двойная загрузка).</p>
+            
+            <h3>Создание загрузочного носителя</h3>
+            <ol>
+                <li>Скачайте образ PulseOS с <a href="index.html#download">официального сайта</a></li>
+                <li>Подготовьте USB-накопитель объемом не менее 8 ГБ</li>
+                <li>Используйте одну из программ для записи образа:
+                    <ul>
+                        <li><strong>BalenaEtcher</strong> (Windows, macOS, Linux)</li>
+                        <li><strong>Rufus</strong> (Windows)</li>
+                        <li><strong>dd команда</strong> (Linux/macOS)</li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <h3>Процесс установки</h3>
+            <p>После загрузки с USB-носителя следуйте инструкциям установщика:</p>
+            <div class="info-box">
+                <div class="box-title"><i class="fas fa-info-circle"></i> Важно</div>
+                <p>Если вы планируете установку рядом с Windows, отключите "Быстрый запуск" в Windows перед установкой. Также рекомендуется сделать резервную копию важных данных.</p>
+            </div>
+            
+            <h4>Шаги установки:</h4>
+            <ol>
+                <li>Выберите язык системы</li>
+                <li>Настройте раскладку клавиатуры</li>
+                <li>Подключитесь к сети Wi-Fi или Ethernet</li>
+                <li>Выберите тип установки:
+                    <ul>
+                        <li>Обычная установка (рекомендуется)</li>
+                        <li>Минимальная установка</li>
+                        <li>Установка с шифрованием LUKS</li>
+                    </ul>
+                </li>
+                <li>Разметка диска (автоматическая или ручная)</li>
+                <li>Настройка пользователя и пароля</li>
+                <li>Дождитесь завершения установки и перезагрузите систему</li>
+            </ol>
+            
+            <div class="command">sudo apt update && sudo apt upgrade</div>
+            <p class="code-description">После установки рекомендуется обновить систему до последних версий пакетов.</p>
+        </section>
+        
+        <!-- Первые шаги -->
+        <section class="doc-section" id="first-steps">
+            <h2>Первые шаги после установки</h2>
+            
+            <h3>Обновление системы</h3>
+            <p>После первой загрузки откройте Терминал и выполните:</p>
+            <div class="code-block">
+                <pre><code># Обновление списка пакетов
+sudo apt update
+
+# Установка обновлений
+sudo apt upgrade
+
+# Обновление ядра (если доступно)
+sudo apt dist-upgrade
+
+# Очистка кэша пакетов
+sudo apt autoclean
+sudo apt autoremove</code></pre>
+            </div>
+            
+            <h3>Установка проприетарных драйверов</h3>
+            <p>Для видеокарт NVIDIA или AMD рекомендуется установить проприетарные драйверы для лучшей производительности:</p>
+            <div class="code-block">
+                <pre><code># Просмотр доступных драйверов
+ubuntu-drivers devices
+
+# Автоматическая установка рекомендованных драйверов
+sudo ubuntu-drivers autoinstall
+
+# Или ручная установка конкретной версии
+sudo apt install nvidia-driver-535</code></pre>
+            </div>
+            
+            <h3>Настройка часового пояса и локализации</h3>
+            <div class="code-block">
+                <pre><code># Настройка часового пояса
+sudo timedatectl set-timezone Europe/Moscow
+
+# Настройка локализации (русский язык)
+sudo localectl set-locale LANG=ru_RU.UTF-8
+sudo localectl set-keymap ru</code></pre>
+            </div>
+            
+            <div class="warning-box">
+                <div class="box-title"><i class="fas fa-exclamation-triangle"></i> Внимание</div>
+                <p>После изменения локализации потребуется перезагрузить систему для применения всех настроек.</p>
+            </div>
+        </section>
+        
+        <!-- Системные настройки -->
+        <section class="doc-section" id="system-settings">
+            <h2>Системные настройки</h2>
+            <p>PulseOS использует среду рабочего стола GNOME с пользовательскими расширениями. Основные настройки доступны через приложение "Параметры".</p>
+            
+            <h3>Настройки внешнего вида</h3>
+            <ul>
+                <li><strong>Темы</strong>: PulseOS включает светлую и темную тему, которые можно переключать в настройках</li>
+                <li><strong>Обои рабочего стола</strong>: В коллекции доступны обои PulseOS и возможность установки собственных</li>
+                <li><strong>Экран блокировки</strong>: Настройка фона и времени до блокировки экрана</li>
+            </ul>
+            
+            <h3>Настройки энергосбережения</h3>
+            <p>Для ноутбуков особенно важны настройки энергосбережения:</p>
+            <div class="code-block">
+                <pre><code># Установка утилит для управления питанием
+sudo apt install tlp tlp-rdw
+
+# Запуск службы TLP
+sudo systemctl enable tlp
+sudo systemctl start tlp
+
+# Проверка статуса
+sudo tlp-stat -s</code></pre>
+            </div>
+            
+            <h3>Настройки принтера</h3>
+            <p>PulseOS использует систему печати CUPS. Для настройки принтера:</p>
+            <ol>
+                <li>Откройте "Параметры" → "Принтеры"</li>
+                <li>Нажмите "Добавить принтер"</li>
+                <li>Система автоматически обнаружит сетевые принтеры</li>
+                <li>Для USB-принтеров подключите устройство и следуйте инструкциям</li>
+            </ol>
+            
+            <p>Или используйте терминал:</p>
+            <div class="code-block">
+                <pre><code># Запуск веб-интерфейса CUPS
+sudo systemctl start cups
+# Откройте http://localhost:631 в браузере</code></pre>
+            </div>
+        </section>
+        
+        <!-- APT и пакеты -->
+        <section class="doc-section" id="apt">
+            <h2>Управление пакетами с APT</h2>
+            <p>APT (Advanced Package Tool) — основной инструмент управления пакетами в PulseOS. Он работает с репозиториями .deb пакетов.</p>
+            
+            <h3>Основные команды APT</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Команда</th>
+                            <th>Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>sudo apt update</code></td>
+                            <td>Обновить список доступных пакетов</td>
+                        </tr>
+                        <tr>
+                            <td><code>sudo apt upgrade</code></td>
+                            <td>Установить обновления для всех пакетов</td>
+                        </tr>
+                        <tr>
+                            <td><code>sudo apt install &lt;пакет&gt;</code></td>
+                            <td>Установить пакет</td>
+                        </tr>
+                        <tr>
+                            <td><code>sudo apt remove &lt;пакет&gt;</code></td>
+                            <td>Удалить пакет (сохраняя конфигурацию)</td>
+                        </tr>
+                        <tr>
+                            <td><code>sudo apt purge &lt;пакет&gt;</code></td>
+                            <td>Полностью удалить пакет с конфигурацией</td>
+                        </tr>
+                        <tr>
+                            <td><code>apt search &lt;запрос&gt;</code></td>
+                            <td>Поиск пакетов</td>
+                        </tr>
+                        <tr>
+                            <td><code>apt show &lt;пакет&gt;</code></td>
+                            <td>Показать информацию о пакете</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Добавление репозиториев</h3>
+            <p>Для добавления сторонних репозиториев:</p>
+            <div class="code-block">
+                <pre><code># Добавление репозитория
+sudo add-apt-repository ppa:repository-name
+
+# Или ручное добавление в /etc/apt/sources.list.d/
+echo "deb http://repository.example.com/ubuntu noble main" | sudo tee /etc/apt/sources.list.d/repository-name.list
+
+# Добавление ключа репозитория
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys KEY_ID</code></pre>
+            </div>
+            
+            <div class="warning-box">
+                <div class="box-title"><i class="fas fa-exclamation-triangle"></i> Безопасность</div>
+                <p>Добавляйте только доверенные репозитории. Неподписанные репозитории могут содержать вредоносное ПО.</p>
+            </div>
+        </section>
+        
+        <!-- Терминал основы -->
+        <section class="doc-section" id="terminal-basics">
+            <h2>Основы работы с терминалом</h2>
+            
+            <h3>Навигация в файловой системе</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Команда</th>
+                            <th>Описание</th>
+                            <th>Пример</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>pwd</code></td>
+                            <td>Показать текущую директорию</td>
+                            <td><code>pwd</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>ls</code></td>
+                            <td>Список файлов</td>
+                            <td><code>ls -la</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>cd</code></td>
+                            <td>Сменить директорию</td>
+                            <td><code>cd ~/Documents</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>mkdir</code></td>
+                            <td>Создать директорию</td>
+                            <td><code>mkdir new_folder</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>rmdir</code></td>
+                            <td>Удалить пустую директорию</td>
+                            <td><code>rmdir old_folder</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Работа с файлами</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Команда</th>
+                            <th>Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>cp</code></td>
+                            <td>Копирование файлов</td>
+                        </tr>
+                        <tr>
+                            <td><code>mv</code></td>
+                            <td>Перемещение/переименование</td>
+                        </tr>
+                        <tr>
+                            <td><code>rm</code></td>
+                            <td>Удаление файлов</td>
+                        </tr>
+                        <tr>
+                            <td><code>cat</code></td>
+                            <td>Просмотр содержимого</td>
+                        </tr>
+                        <tr>
+                            <td><code>nano/vim</code></td>
+                            <td>Текстовые редакторы</td>
+                        </tr>
+                        <tr>
+                            <td><code>chmod</code></td>
+                            <td>Изменение прав доступа</td>
+                        </tr>
+                        <tr>
+                            <td><code>chown</code></td>
+                            <td>Изменение владельца</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Полезные сочетания клавиш в терминале</h3>
+            <ul>
+                <li><strong>Ctrl+C</strong> — прервать выполнение команды</li>
+                <li><strong>Ctrl+D</strong> — завершить сессию (выход)</li>
+                <li><strong>Ctrl+L</strong> — очистить экран</li>
+                <li><strong>Tab</strong> — автодополнение</li>
+                <li><strong>Стрелки вверх/вниз</strong> — история команд</li>
+                <li><strong>Ctrl+R</strong> — поиск в истории команд</li>
+            </ul>
+        </section>
+        
+        <!-- Решение проблем -->
+        <section class="doc-section" id="troubleshooting">
+            <h2>Решение общих проблем</h2>
+            
+            <h3>Проблемы с загрузкой</h3>
+            <p>Если система не загружается, попробуйте следующие шаги:</p>
+            <ol>
+                <li>При загрузке нажмите <code>Esc</code> для выбора ядра</li>
+                <li>Выберите режим восстановления (Recovery Mode)</li>
+                <li>Используйте опцию "root" для доступа к терминалу</li>
+                <li>Проверьте файловую систему: <code>fsck -f /dev/sdX</code></li>
+                <li>Переустановите ядро: <code>apt install --reinstall linux-image-generic</code></li>
+                <li>Обновите конфигурацию загрузчика: <code>update-grub</code></li>
+            </ol>
+            
+            <h3>Проблемы с Wi-Fi</h3>
+            <div class="code-block">
+                <pre><code># Проверка состояния Wi-Fi
+sudo systemctl status NetworkManager
+
+# Перезапуск сетевого менеджера
+sudo systemctl restart NetworkManager
+
+# Просмотр доступных сетей
+nmcli device wifi list
+
+# Подключение к сети
+nmcli device wifi connect "SSID" password "пароль"
+
+# Просмотр информации о драйверах Wi-Fi
+lspci -k | grep -A 3 -i network</code></pre>
+            </div>
+            
+            <h3>Проблемы со звуком</h3>
+            <div class="code-block">
+                <pre><code># Проверка установленных драйверов звука
+lspci -v | grep -A 7 -i "audio"
+
+# Перезапуск звуковой системы
+systemctl --user restart pulseaudio
+# Или для PulseAudio 15+
+pulseaudio -k && pulseaudio --start
+
+# Проверка уровней звука
+alsamixer</code></pre>
+            </div>
+            
+            <div class="info-box">
+                <div class="box-title"><i class="fas fa-life-ring"></i> Поддержка</div>
+                <p>Если вы не можете решить проблему самостоятельно, обратитесь за помощью на <a href="index.html#community">форум сообщества PulseOS</a> или создайте issue на GitHub репозитории проекта.</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                <a href="index.html" class="btn" style="display: inline-flex; align-items: center;">
+                    <i class="fas fa-home" style="margin-right: 10px;"></i> Вернуться на главную страницу
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Back to top button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Close sidebar when clicking on a link (mobile)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+        
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Highlight active section in sidebar
+        const sections = document.querySelectorAll('.doc-section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        
+        function highlightNavLink() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', highlightNavLink);
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
