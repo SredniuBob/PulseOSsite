@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseOS - Дистрибутив Linux на базе Ubuntu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #77216F;
+            --primary-light: #9d4295;
+            --secondary: #E95420;
+            --dark: #333;
+            --light: #f5f5f5;
+            --gray: #777;
+            --ubuntu-gradient: linear-gradient(135deg, #77216F 0%, #E95420 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f9f9f9;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: var(--ubuntu-gradient);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        /* Features */
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            color: var(--primary);
+        }
+        
+        /* Requirements */
+        .requirements {
+            background-color: var(--light);
+        }
+        
+        .requirements-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .requirement-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .requirement-box h3 {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .requirement-box ul {
+            list-style-position: inside;
+        }
+        
+        .requirement-box li {
+            margin-bottom: 10px;
+        }
+        
+        /* Download */
+        .download-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .download-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .download-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .download-card h3 {
+            color: var(--primary);
+        }
+        
+        .download-card .btn {
+            margin-top: 1.5rem;
+        }
+        
+        .version {
+            display: inline-block;
+            background: var(--primary-light);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--secondary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+                display: none;
+            }
+            
+            nav.active ul {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section {
+                padding: 3rem 0;
+            }
+        }
+        
+        /* Pulse animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <h1>Pulse<span>OS</span></h1>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#features">Особенности</a></li>
+                        <li><a href="#requirements">Требования</a></li>
+                        <li><a href="#download">Скачать</a></li>
+                        <li><a href="#community">Сообщество</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>PulseOS - Linux дистрибутив с сердцем Ubuntu</h2>
+            <p>PulseOS - это современный, стабильный и быстрый дистрибутив Linux, созданный на основе Ubuntu 24.04.03 LTS. Идеальное решение для разработчиков, творческих профессионалов и всех, кто ценит простоту, элегантность и мощь открытого ПО.</p>
+            <a href="#download" class="btn pulse">Скачать PulseOS</a>
+            <a href="#features" class="btn btn-outline">Узнать больше</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Почему PulseOS?</h2>
+                <p>PulseOS сочетает в себе стабильность Ubuntu 24.04.03 LTS с современным пользовательским интерфейсом и набором приложений для продуктивной работы.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fab fa-ubuntu"></i>
+                    </div>
+                    <h3>Основан на Ubuntu 24.04.03</h3>
+                    <p>Получите все преимущества стабильной и хорошо поддерживаемой платформы Ubuntu LTS с длительным сроком поддержки.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3>Высокая производительность</h3>
+                    <p>Оптимизированный для скорости и эффективности использования ресурсов. Идеально подходит как для новых, так и для старых компьютеров.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>Современный интерфейс</h3>
+                    <p>Элегантный и интуитивно понятный пользовательский интерфейс с поддержкой темной и светлой темы.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Безопасность и приватность</h3>
+                    <p>Встроенные инструменты безопасности, регулярные обновления и полный контроль над вашими данными.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h3>Полный набор приложений</h3>
+                    <p>Всё необходимое для работы, творчества и развлечений уже предустановлено. Офисные приложения, браузер, медиаплеер и многое другое.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Активное сообщество</h3>
+                    <p>Присоединяйтесь к растущему сообществу PulseOS. Получайте помощь, делитесь идеями и участвуйте в развитии дистрибутива.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="section requirements" id="requirements">
+        <div class="container">
+            <div class="section-title">
+                <h2>Системные требования</h2>
+                <p>PulseOS работает на большинстве современных компьютеров и ноутбуков. Проверьте, соответствует ли ваше оборудование минимальным требованиям.</p>
+            </div>
+            
+            <div class="requirements-content">
+                <div class="requirement-box">
+                    <h3>Минимальные требования</h3>
+                    <ul>
+                        <li>Процессор: 2-ядерный, 1.5 ГГц</li>
+                        <li>ОЗУ: 2 ГБ</li>
+                        <li>Место на диске: 25 ГБ</li>
+                        <li>Видеокарта: с поддержкой OpenGL 3.3</li>
+                        <li>Разрешение экрана: 1024×768</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h3>Рекомендуемые требования</h3>
+                    <ul>
+                        <li>Процессор: 4-ядерный, 2.0 ГГц+</li>
+                        <li>ОЗУ: 4 ГБ или более</li>
+                        <li>Место на диске: 50 ГБ (SSD предпочтительно)</li>
+                        <li>Видеокарта: с поддержкой Vulkan 1.1</li>
+                        <li>Разрешение экрана: 1920×1080</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-box">
+                    <h3>Поддерживаемые архитектуры</h3>
+                    <ul>
+                        <li>64-битная (x86_64)</li>
+                        <li>ARM64 (Raspberry Pi 4 и новее)</li>
+                        <li>PowerPC (экспериментальная поддержка)</li>
+                        <li>UEFI и Legacy BIOS</li>
+                        <li>Secure Boot совместимость</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="section" id="download">
+        <div class="container">
+            <div class="section-title">
+                <h2>Скачать PulseOS</h2>
+                <p>Выберите подходящую версию PulseOS для загрузки. Все версии основаны на Ubuntu 24.04.03 LTS и включают долгосрочную поддержку до апреля 2027 года.</p>
+            </div>
+            
+            <div class="download-options">
+                <div class="download-card">
+                    <span class="version">СТАНДАРТНАЯ ВЕРСИЯ</span>
+                    <h3>PulseOS Desktop</h3>
+                    <p>Полная версия с предустановленным набором приложений для повседневного использования, работы и развлечений.</p>
+                    <p><strong>Размер: 3.2 GB</strong></p>
+                    <a href="#" class="btn">Скачать (64-bit)</a>
+                </div>
+                
+                <div class="download-card">
+                    <span class="version">МИНИМАЛИСТИЧНАЯ</span>
+                    <h3>PulseOS Minimal</h3>
+                    <p>Облегченная версия с минимальным набором приложений для пользователей, которые предпочитают настраивать систему под себя.</p>
+                    <p><strong>Размер: 1.8 GB</strong></p>
+                    <a href="#" class="btn">Скачать (64-bit)</a>
+                </div>
+                
+                <div class="download-card">
+                    <span class="version">ДЛЯ РАЗРАБОТЧИКОВ</span>
+                    <h3>PulseOS Developer</h3>
+                    <p>Версия с предустановленными инструментами для разработки: компиляторы, IDE, Docker, Kubernetes и многое другое.</p>
+                    <p><strong>Размер: 4.1 GB</strong></p>
+                    <a href="#" class="btn">Скачать (64-bit)</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <p>Также доступны: <a href="#">Torrent-файлы</a> | <a href="#">Списки контрольных сумм</a> | <a href="#">Предыдущие версии</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="community">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PulseOS</h3>
+                    <p>Дистрибутив Linux на базе Ubuntu 24.04.03 LTS. Стабильность, производительность и элегантность в одном решении.</p>
+                    <p>Основан на открытом ПО. Распространяется свободно.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Ресурсы</h3>
+                    <ul>
+                        <li><a href="#">Документация</a></li>
+                        <li><a href="#">Форум сообщества</a></li>
+                        <li><a href="#">Баги и проблемы</a></li>
+                        <li><a href="#">Блог разработчиков</a></li>
+                        <li><a href="#">Пожертвования</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Сообщество</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-telegram"></i> Telegram</a></li>
+                        <li><a href="#"><i class="fab fa-discord"></i> Discord</a></li>
+                        <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
+                        <li><a href="#"><i class="fab fa-reddit"></i> Reddit</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Основано на</h3>
+                    <ul>
+                        <li><a href="https://ubuntu.com">Ubuntu 24.04.03 LTS</a></li>
+                        <li><a href="https://debian.org">Debian</a></li>
+                        <li><a href="https://gnome.org">GNOME</a></li>
+                        <li><a href="https://linux.org">Ядро Linux</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 PulseOS Project. Все права на исходный код открыты. Ubuntu и Canonical являются зарегистрированными товарными знаками Canonical Ltd.</p>
+                <p>PulseOS не аффилирован с Canonical Ltd. или проектом Ubuntu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    mainNav.classList.remove('active');
+                }
+            });
+        });
+        
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = 'rgba(119, 33, 111, 0.95)';
+            } else {
+                header.style.backgroundColor = '';
+            }
+        });
+    </script>
+</body>
+</html>
